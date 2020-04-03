@@ -2,6 +2,7 @@
 \ Brackets are used instead of parans due to FORTH comment conventions
 \ To run: gforth survey_one.fs -e bye
 
+
 \Helper words
 : stkln
     .s 10 EMIT ;
@@ -17,8 +18,7 @@
     DUP            \ Currently (n -- (n-1)!)
     1 -
     DUP
-    2 > IF recurse * THEN EXIT ;
+    2 > IF recurse ELSE THEN * EXIT ;
   
 10 0 DO i 
-
-    .s ;
+    cat . ;
