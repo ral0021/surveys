@@ -12,7 +12,19 @@
     DUP
     VARIABLE N
     N !
+    1e +
     1e SWAP /
+    VARIABLE M   
+    M !       \\[1 / [n + 1]]
+    N @
+    2 * 
+    fact      \\ 2n!
+    N @
+    fact 
+    2 *
+    /          \\n![2n - n]!
+    M @ 
+    *
     ;
 
 \Binomial    
@@ -36,4 +48,4 @@
     2 > IF recurse ELSE THEN * EXIT ;
   
 10 0 DO i 
-    cat . ;
+    i cat;
