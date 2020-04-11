@@ -1,51 +1,48 @@
 \ Survey One
 \ Brackets are used instead of parans due to FORTH comment conventions
 \ To run: gforth survey_one.fs -e bye
+\ Team Zeta
 
-
-\Helper words
+\ Helper words
 : stkln
     .s 10 EMIT ;
 
-\Catalan
-: cat ( n -- [1 / [n + 1]] * 2n!/[n![2n-n]]!)
+\ Factorial
+: fact ( n -- n!)
     DUP
-    VARIABLE N
-    N !
+    1 -
+    DUP
+    2 > IF recurse ELSE THEN * EXIT ;
+    
+\ Binomial    
+: bin { n k -- n k } ( n, k -- n!/[k![n-k]]!) 
+    n
+    k
+    - fact  
+    k
+    fact 
+    n
+    fact / 
+    ;
+
+Variable M    
+\ Catalan
+: cat { n -- n } ( n -- [1 / [n + 1]] * 2n!/[n![2n-n]]!)
+    n
+    DUP
     1e +
     1e SWAP /
-    VARIABLE M   
-    M !       \\[1 / [n + 1]]
-    N @
+    M !       \ [1 / [n + 1]]
+    n
     2 * 
-    fact      \\ 2n!
-    N @
+    fact      \  2n!
+    n
     fact 
     2 *
-    /          \\n![2n - n]!
+    /          \ n![2n - n]!
     M @ 
     *
     ;
 
-\Binomial    
-: bin ( n, k -- n!/[k![n-k]]!) 
-    VARIABLE N
-    N !
-    VARIABLE K
-    K !
-    N @ K @ -
-    fact
-    K @ fact
-    N @ fact
-    /
-    ;
-
-\Factorial
-: fact ( n -- n!) \ Brackets are used 
-    DUP            \ Currently (n -- (n-1)!)
-    1 -
-    DUP
-    2 > IF recurse ELSE THEN * EXIT ;
-  
-10 0 DO i 
-    i cat;
+\ Main      
+10 cat
