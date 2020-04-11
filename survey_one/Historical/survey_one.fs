@@ -6,28 +6,27 @@
 \ require float.fs 
 \ Not required when interpreted in gforth
 
-\ Print stack and newline
-: stkln
-    .s 10 EMIT ;
+\ Print top of stack and newline
+: prtln
+    f>s . 10 EMIT ;
 
 \ Factorial
 : fact ( n -- n!)
-    DUP 
-    1 -
-    DUP
-    2 > IF recurse ELSE THEN * EXIT ;
+	DUP 2 > IF DUP 1 - recurse * THEN EXIT ;
     
 \ Binomial    
 : binom { n k -- n k } ( n, k -- n!/[k![n-k]]!) 
     n k - fact  
-    k fact n fact / 
-    ;
+    k fact n fact / ;
  
 \ Catalan
-: cat { n -- n } ( n -- [1 / [n + 1]] * 2n!/[n![2n-n]]!)
-    1e n s>f 1e f+ f/  \ [1 / [n + 1]]
-    n DUP 2 * binom \ 2n!/[n![2n-n]]!
-    s>f f* ;
+: cat { n -- n } ( n -- [1 / [n + 1]] * binomial 2n n)
+    n DUP 2 * binom s>f	\ 2n!/[n![2n-n]]!
+    1 n + s>f f/ ;
     
 \ Main      
- 10 cat stkln
+1 cat prtln
+2 cat prtln
+3 cat prtln
+4 cat prtln
+
