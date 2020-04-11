@@ -3,25 +3,25 @@
 \ To run: gforth survey_one.fs -e bye
 \ Team Zeta
 
+require float.fs
 
-\ Print stack and newline
+\ Print float stack and newline
 : stkln
-    .s 10 EMIT ;
+    f. 10 EMIT ;
 
 \ Factorial
 : fact ( n -- n!)
-    DUP 
-    1 -
-    DUP
-    2 > IF recurse ELSE THEN * EXIT ;
+    FDUP 
+    1e f-
+    FDUP
+    2e f> IF recurse ELSE THEN f* EXIT ;
     
 \ Binomial    
 : binom { n k -- n k } ( n, k -- n!/[k![n-k]]!) 
     n k f- fact  
     k fact n fact f/ 
     ;
-
-Variable M    
+ 
 \ Catalan
 : cat { n -- n } ( n -- [1 / [n + 1]] * 2n!/[n![2n-n]]!)
     1e n 1e f+ f/  \ [1 / [n + 1]]
@@ -30,4 +30,4 @@ Variable M
     ;
 
 \ Main      
-10e cat
+ 10e cat
