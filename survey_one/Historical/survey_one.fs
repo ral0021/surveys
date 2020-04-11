@@ -3,6 +3,8 @@
 \ To run: gforth survey_one.fs -e bye
 \ Team Zeta
 
+require float.fs
+
 \ Helper words
 : stkln
     .s 10 EMIT ;
