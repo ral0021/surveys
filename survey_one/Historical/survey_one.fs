@@ -6,23 +6,30 @@
 \ require float.fs 
 \ Not required when interpreted in gforth
 
-\ Print top of stack and newline
+\ Print top of float stack
+\ converted to single cell value and newline
 : prtln
     f>s . 10 EMIT ;
 
 \ Factorial
 : fact ( n -- n!)
+	\ If Greater than 2 recurse else exit 
+	\ with last result on stack
 	DUP 2 > IF DUP 1 - recurse * THEN EXIT ;
     
-\ Binomial    
-: binom { n k -- n k } ( n, k -- n!/[k![n-k]]!) 
-    n k - fact  
-    k fact n fact / ;
+\ Combin   
+: combin { n k -- n k } ( n, k -- n!/[k![n-k]]!) 
+    n k - fact k fact * \ push [n-k]! and k! onto stack then multiply
+    n fact \ Push n! on to the stack
+    s>f s>f f/ f>s ; \ Convert for division then turnicate
  
 \ Catalan
-: cat { n -- n } ( n -- [1 / [n + 1]] * binomial 2n n)
-    n DUP 2 * binom s>f	\ 2n!/[n![2n-n]]!
+: cat { n -- n } ( n -- [1 / [n + 1]] * 2nCn)
+    n DUP 2 * combin s>f \ 2n!/[n![2n-n]]!
     1 n + s>f f/ ;
+     
+    \ s>f converts from single cell stack object to 
+    \ floating point stack object and pushs it to the appropriate stack
     
 \ Main      
 1 cat prtln
