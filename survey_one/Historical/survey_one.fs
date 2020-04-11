@@ -17,23 +17,29 @@
 	\ with last result on stack
 	DUP 2 > IF DUP 1 - recurse * THEN EXIT ;
     
-\ Combin   
-: combin { n k -- n k } ( n, k -- n!/[k![n-k]]!) 
-    n k - fact k fact * \ push [n-k]! and k! onto stack then multiply
-    n fact \ Push n! on to the stack
+\ binom   
+: binom { n -- n } ( n, k -- n!/[k![n-k]]!) 
+    n fact DUP * \ push n! onto stack dups then multiplies
+    n 2 * fact \ Push 2n! on to the stack
     s>f s>f f/ f>s ; \ Convert for division then turnicate
  
 \ Catalan
 : cat { n -- n } ( n -- [1 / [n + 1]] * 2nCn)
-    n DUP 2 * combin s>f \ 2n!/[n![2n-n]]!
+    n binom s>f \ 2n!/[n![2n-n]]!
     1 n + s>f f/ ;
      
     \ s>f converts from single cell stack object to 
     \ floating point stack object and pushs it to the appropriate stack
     
-\ Main      
+\ Main  
+0 cat prtln    
 1 cat prtln
 2 cat prtln
 3 cat prtln
 4 cat prtln
+5 cat prtln
+6 cat prtln
+7 cat prtln
+8 cat prtln
+9 cat prtln
 
