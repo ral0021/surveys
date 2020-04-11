@@ -18,16 +18,15 @@ require float.fs
     
 \ Binomial    
 : binom { n k -- n k } ( n, k -- n!/[k![n-k]]!) 
-    n k f- fact  
-    k fact n fact f/ 
+    n k - fact  
+    k fact n fact / 
     ;
  
 \ Catalan
 : cat { n -- n } ( n -- [1 / [n + 1]] * 2n!/[n![2n-n]]!)
-    1e n 1e f+ f/  \ [1 / [n + 1]]
-    n n 2e f* binom \ 2n!/[n![2n-n]]!
-    f*
-    ;
-
+    1e n s>f 1e f+ f/  \ [1 / [n + 1]]
+    n n 2 * binom \ 2n!/[n![2n-n]]!
+    s>f f* ;
+    
 \ Main      
- 10e cat
+ 10 cat
